@@ -12,11 +12,11 @@ else
 	LDFLAGS += --debug
 endif
 CPPOBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
-OBJS = $(patsubst %.c,%.o,$(wildcard *.c)) $(patsubst %.S,%.o,$(wildcard *.S)) $(CPPOBJS)
+OBJS = $(patsubst %.c,%.o,$(wildcard *.c)) $(patsubst %.S,%.o,$(wildcard *.S)) $(CPPOBJS) n2DLib/n2DLib.o
 ifneq ($(strip $(CPPOBJS)),)
 	LDFLAGS += --cpp
 endif
-EXE = VVVVVV.tns
+EXE = nVVVVVV.tns
 DISTDIR = .
 vpath %.tns $(DISTDIR)
 
@@ -40,3 +40,4 @@ endif
 
 clean:
 	rm -f *.o *.elf $(DISTDIR)/*.gdb $(DISTDIR)/$(EXE)
+
