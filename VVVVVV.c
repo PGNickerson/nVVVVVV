@@ -48,11 +48,11 @@ int can_move_x()
 	int i;
 	for(i = 0; i < 20; ++i)
 	{
-		if(map1_data[(player_point.y + i) / 8][player_point.x / 8] != 20)
+		if(map1_data[(player_point.y + i) / 8][player_point.x / 8] > 20)
 		{
 			return 0;
 		}
-		if(map1_data[(player_point.y + i) / 8][(player_point.x + 9) / 8] != 20)
+		if(map1_data[(player_point.y + i) / 8][(player_point.x + 9) / 8] > 20)
 		{
 			return 0;
 		}
@@ -65,12 +65,12 @@ int can_move_y()
 	int i;
 	for(i = 0; i < 10; ++i)
 	{
-		if(map1_data[player_point.y / 8][(player_point.x + i) / 8] != 20)
+		if(map1_data[player_point.y / 8][(player_point.x + i) / 8] > 20)
 		{
 			is_in_air = 0;
 			return 0;
 		}
-		if(map1_data[(player_point.y + 19) / 8][(player_point.x + i) / 8] != 20)
+		if(map1_data[(player_point.y + 19) / 8][(player_point.x + i) / 8] > 20)
 		{
 			is_in_air = 0;
 			return 0;
@@ -113,13 +113,16 @@ int detect_flip()
 	int i;
 	for(i = 0; i < 21; ++i)
 	{
-		if((map1_data[(player_point.y + i) / 8][player_point.x / 8] == 4) && !(is_in_flip))
+		if ((i < 17) && (i > 2))
 		{
-			return 1;
-		}
-		if((map1_data[(player_point.y + i) / 8][(player_point.x + 9) / 8] == 4) && !(is_in_flip))
-		{
-			return 1;
+			if((map1_data[(player_point.y + i) / 8][player_point.x / 8] == 4) && !(is_in_flip))
+			{
+				return 1;
+			}
+			if((map1_data[(player_point.y + i) / 8][(player_point.x + 9) / 8] == 4) && !(is_in_flip))
+			{
+				return 1;
+			}
 		}
 		if(i < 10)
 		{
