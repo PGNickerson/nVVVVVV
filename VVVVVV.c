@@ -46,16 +46,12 @@ void flip_player()
 int can_move_x()
 {
 	int i;
-	for(i = 0; i < 20; ++i)
+	for(i = 2; i < 18; ++i)
 	{
 		if(map1_data[(player_point.y + i) / 8][player_point.x / 8] > 20)
-		{
 			return 0;
-		}
 		if(map1_data[(player_point.y + i) / 8][(player_point.x + 9) / 8] > 20)
-		{
 			return 0;
-		}
 	}
 	return 1;
 }
@@ -63,7 +59,7 @@ int can_move_x()
 int can_move_y()
 {
 	int i;
-	for(i = 0; i < 10; ++i)
+	for(i = 1; i < 9; ++i)
 	{
 		if(map1_data[player_point.y / 8][(player_point.x + i) / 8] > 20)
 		{
@@ -83,26 +79,18 @@ int can_move_y()
 int detect_spike()
 {
 	int i;
-	for(i = 0; i < 21; ++i)
+	for(i = 1; i < 19; ++i)
 	{
 		if(map1_data[(player_point.y + i) / 8][player_point.x / 8] <= 3)
-		{
 			return 1;
-		}
 		if(map1_data[(player_point.y + i) / 8][(player_point.x + 9) / 8] <= 3)
-		{
 			return 1;
-		}
-		if(i < 10)
+		if(i < 9)
 		{
 			if(map1_data[player_point.y / 8][(player_point.x + i) / 8] <= 3)
-			{
 				return 1;
-			}
 			if(map1_data[(player_point.y + 19) / 8][(player_point.x + i) / 8] <= 3)
-			{
 				return 1;
-			}
 		}
 	}
 	return 0;
@@ -111,29 +99,21 @@ int detect_spike()
 int detect_flip()
 {
 	int i;
-	for(i = 0; i < 21; ++i)
+	for(i = 1; i < 17; ++i)
 	{
-		if ((i < 17) && (i > 2))
+		if (i > 2)
 		{
 			if((map1_data[(player_point.y + i) / 8][player_point.x / 8] == 4) && !(is_in_flip))
-			{
 				return 1;
-			}
 			if((map1_data[(player_point.y + i) / 8][(player_point.x + 9) / 8] == 4) && !(is_in_flip))
-			{
 				return 1;
-			}
 		}
-		if(i < 10)
+		if(i < 9)
 		{
 			if((map1_data[(player_point.y + 3) / 8][(player_point.x + i) / 8] == 4) && !(is_in_flip))
-			{
 				return 1;
-			}
-			if((map1_data[(player_point.y + 16) / 8][(player_point.x + i) / 8] == 4) && !(is_in_flip))
-			{
+			if((map1_data[(player_point.y + 15) / 8][(player_point.x + i) / 8] == 4) && !(is_in_flip))
 				return 1;
-			}
 		}
 	}
 	is_in_flip = 1;
@@ -144,7 +124,6 @@ int main()
 {
 	int prev_x;
 	int prev_y;
-	int future_y;
 	int keep_playing = 1;
 	Rect player_sprite = {25,76,21,10};
 	Rect inverted_player_sprite = {59,76,21,10};
@@ -157,57 +136,30 @@ int main()
 		prev_x = player_point.x;
 		prev_y = player_point.y;
 		if(K_7)
-		{
 			player_point.x -= 2;
-		}
 		if(K_9)
-		{
 			player_point.x += 2;
-		}
 		if(K_8)
-		{
 			if(!is_in_air)
-			{
 				flip_player();
-			}
-		}
 		if(K_ESC)
-		{
 			keep_playing = 0;
-		}
 		player_point.y = player_point.y + gravity;
 		if(detect_spike())
-		{
 			player_point = checkpoint;
-		}
 		if(detect_flip())
-		{
 			flip_player();
-		}
 		else
-		{
 			is_in_flip = 0;
-		}
-		future_y = player_point.y;
-		player_point.y = prev_y;
 		if(!can_move_x())
-		{
 			player_point.x = prev_x;
-		}
-		player_point.y = future_y;
 		if(!can_move_y())
-		{
 			player_point.y = prev_y;
-		}
 		draw_tile_map();
 		if(gravity == 2)
-		{
 			drawSpritePart(image_VVVVVV, player_point.x, player_point.y, &player_sprite);
-		}
 		if(gravity == -2)
-		{
 			drawSpritePart(image_VVVVVV, player_point.x, player_point.y, &inverted_player_sprite);
-		}
 		updateScreen();
 		//sleep(10);
 	}
