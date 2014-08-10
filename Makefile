@@ -12,7 +12,7 @@ else
 	LDFLAGS += --debug
 endif
 CPPOBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
-OBJS = $(patsubst %.c,%.o,$(wildcard *.c)) $(patsubst %.S,%.o,$(wildcard *.S)) $(CPPOBJS) n2DLib/n2DLib.o
+OBJS = $(patsubst %.c,%.o,$(wildcard *.c)) $(patsubst %.S,%.o,$(wildcard *.S)) $(CPPOBJS) n2Dlib/n2DLib.o
 ifneq ($(strip $(CPPOBJS)),)
 	LDFLAGS += --cpp
 endif

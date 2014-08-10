@@ -15,12 +15,15 @@
 #define K_4 isKeyPressed(KEY_NSPIRE_4)
 #define K_6 isKeyPressed(KEY_NSPIRE_6)
 
+#define frame_skip 2
+
 unsigned short is_in_air = 1;
 unsigned short is_in_flip = 0;
 Point player_point = {16,16};
-signed short gravity = 2;
+signed short gravity = 1;
 Point checkpoint = {16,16};
 Rect src_rect;
+unsigned short frame_counter = 0;
 
 void draw_tile(unsigned short *tileset, int tile_num, int x, int y)
 {
@@ -132,13 +135,12 @@ int main()
 	initBuffering();
 	while (keep_playing)
 	{
-		clearBufferB();
 		prev_x = player_point.x;
 		prev_y = player_point.y;
 		if(K_7)
-			player_point.x -= 2;
+			player_point.x -= 1;
 		if(K_9)
-			player_point.x += 2;
+			player_point.x += 1;
 		if(K_8)
 			if(!is_in_air)
 				flip_player();
@@ -155,13 +157,33 @@ int main()
 			player_point.x = prev_x;
 		if(!can_move_y())
 			player_point.y = prev_y;
-		draw_tile_map();
-		if(gravity == 2)
-			drawSpritePart(image_VVVVVV, player_point.x, player_point.y, &player_sprite);
-		if(gravity == -2)
-			drawSpritePart(image_VVVVVV, player_point.x, player_point.y, &inverted_player_sprite);
-		updateScreen();
-		//sleep(10);
+		if(is_classic)
+		{
+			if(frame_counter >= frame_skip)
+			{
+				clearBufferB();
+				draw_tile_map();
+				if(gravity == 1)
+					drawSpritePart(image_VVVVVV, player_point.x, player_point.y, &player_sprite);
+				if(gravity == -1)
+					drawSpritePart(image_VVVVVV, player_point.x, player_point.y, &inverted_player_sprite);
+				updateScreen();
+				frame_counter = 0;
+			}
+			else
+				frame_counter++;
+		}
+		else
+		{
+			clearBufferB();
+			draw_tile_map();
+			if(gravity == 1)
+				drawSpritePart(image_VVVVVV, player_point.x, player_point.y, &player_sprite);
+			if(gravity == -1)
+				drawSpritePart(image_VVVVVV, player_point.x, player_point.y, &inverted_player_sprite);
+			updateScreen();
+			frame_counter = 0;
+		}
 	}
 	deinitBuffering();
 }
